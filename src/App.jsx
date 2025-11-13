@@ -1,9 +1,16 @@
 import "./App.css";
 import { useEffect } from "react";
-import { useJob, useTime } from "./hooks";
+import useTime from "./hooks/useTime";
+import useJob from "./hooks/useJob";
 import Button from "./components/button";
 import Table from "./components/table";
-import { getJobTableHeader, getReportTableHeader, getTimeTableHeader } from "./utils";
+import {
+  getJobTableHeader,
+  getReportTableHeader,
+  getTimeTableHeader,
+} from "./utils";
+import Title from "./components/title";
+import Section from "./components/section";
 
 export default function App() {
   const timeState = useTime();
@@ -21,8 +28,8 @@ export default function App() {
     deleteTime: timeState.deleteIdxOf,
   });
   const reportTableHeader = getReportTableHeader({
-    jobTypes: jobState.types
-  })
+    jobTypes: jobState.types,
+  });
 
   const saveInStore = () => {
     timeState.saveInStorage();
@@ -34,40 +41,76 @@ export default function App() {
     jobState.clearStorage();
   };
 
+  const summaryCount = timeState.totalTimeByJobType.length;
+  const jobTypeCount = jobState.types.length;
+  const timeTableCount = timeState.time.length;
+
   useEffect(() => {
     timeState.initializeFromStorage();
     jobState.initializeFromStorage();
   }, []);
 
   return (
-    <>
-      <div className="head">
-        <h1 className="total-time">Total: {timeState.totalTime}</h1>
-        <Button type="success" className="ms-5 me-1 mb-1" onClick={saveInStore}>
+    <div className="h-full flex flex-col">
+      <div className="flex border-b p-3 gap-4 pb-4 overflow-auto">
+        <h1 className="me-3 text-3xl">Total: {timeState.totalTime}</h1>
+        <Button type="success" onClick={saveInStore}>
           Save
         </Button>
-        <Button type="warning" className="mb-1" onClick={clearFromStore}>
+        <Button type="warning" onClick={clearFromStore}>
           Clean
         </Button>
       </div>
-      <div className="body">
-        <div>
-          <Button className="me-1 mb-1" onClick={timeState.addAtTheEnd}>
-            Add
-          </Button>
-          <Table header={timeTableHeader} rows={timeState.time} />
-        </div>
-        <div>
-          <Button className="mb-1" onClick={jobState.addAtTheEnd}>
-            Add
-          </Button>
-          <Table header={jobTableHeader} rows={jobState.types} />
-        </div>
+      <div className="flex flex-col sm:flex-row flex-1 h-0 overflow-auto">
+        <Section>
+          <Section.Head>
+            <Title>Summary {summaryCount !== 0 && <>({summaryCount})</>}</Title>
+          </Section.Head>
+          <Section.Body>
+            <Table
+              header={reportTableHeader}
+              rows={timeState.totalTimeByJobType}
+            />
+          </Section.Body>
+        </Section>
+        <Section>
+          <Section.Head>
+            <Title>Job Types</Title>
+            <Button onClick={jobState.addAtTheEnd}>
+              Add{jobTypeCount !== 0 && <> ({jobTypeCount})</>}
+            </Button>
+            <Button
+              disabled={!jobState.isChanged}
+              type="warning"
+              onClick={jobState.initializeFromStorage}
+            >
+              Reload
+            </Button>
+          </Section.Head>
+          <Section.Body>
+            <Table header={jobTableHeader} rows={jobState.types} />
+          </Section.Body>
+        </Section>
+        <Section>
+          <Section.Head>
+            <Title>Time Table</Title>
+            <Button onClick={timeState.addAtTheEnd}>
+              Add{timeTableCount !== 0 && <> ({timeTableCount})</>}
+            </Button>
+            <Button
+              disabled={!timeState.isChanged}
+              type="warning"
+              onClick={timeState.initializeFromStorage}
+            >
+              Reload
+            </Button>
+          </Section.Head>
+          <Section.Body>
+            <Table header={timeTableHeader} rows={timeState.time} />
+          </Section.Body>
+        </Section>
       </div>
-      <div>
-        <p>Report:</p>
-        <Table header={reportTableHeader} rows={timeState.totalTimeByJobType}/>
-      </div>
-    </>
+      <div className="p-3">Source: <a className="text-blue-500 hover:underline" href="https://github.com/ssuhe/time-calculator-react" target="_blank">https://github.com/ssuhe/time-calculator-react</a></div>
+    </div>
   );
 }

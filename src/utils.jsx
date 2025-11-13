@@ -15,7 +15,7 @@ const getTimeTableHeader = ({
   handleTimeChanges,
   deleteTime,
 }) => [
-  { label: "#", key: "index", render: (_, ridx) => ridx + 1 },
+  { label: "#", key: "index", render: (_, ridx) => ridx + 1, className: "text-center" },
   {
     label: "Job Type",
     key: "jobType",
@@ -61,7 +61,7 @@ const getTimeTableHeader = ({
 ];
 
 const getJobTableHeader = ({ handleJobChanges, deleteJob }) => [
-  { label: "#", key: "index", render: (_, ridx) => ridx + 1 },
+  { label: "#", key: "index", render: (_, ridx) => ridx + 1 , className: "text-center" },
   {
     label: "Job Type",
     key: "jobType",
@@ -84,6 +84,7 @@ const getReportTableHeader = ({ jobTypes }) => [
   {
     label: "#",
     render: (_, ridx) => ridx + 1,
+    className: "text-center" 
   },
   {
     label: "Job Type",
