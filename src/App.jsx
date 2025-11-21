@@ -48,6 +48,7 @@ export default function App() {
   useEffect(() => {
     timeState.initializeFromStorage();
     jobState.initializeFromStorage();
+    console.log("is it working?");
   }, []);
 
   return (
