@@ -48,8 +48,10 @@ export default function App() {
   useEffect(() => {
     timeState.initializeFromStorage();
     jobState.initializeFromStorage();
-    console.log("is it working?");
+    nofifyThis();
   }, []);
+
+  const nofifyThis = () => console.log("is it working?");
 
   return (
     <div className="h-full flex flex-col">
@@ -111,7 +113,16 @@ export default function App() {
           </Section.Body>
         </Section>
       </div>
-      <div className="p-3">Source: <a className="text-blue-500 hover:underline" href="https://github.com/ssuhe/time-calculator-react" target="_blank">https://github.com/ssuhe/time-calculator-react</a></div>
+      <div className="p-3">
+        Source:{" "}
+        <a
+          className="text-blue-500 hover:underline"
+          href="https://github.com/ssuhe/time-calculator-react"
+          target="_blank"
+        >
+          https://github.com/ssuhe/time-calculator-react
+        </a>
+      </div>
     </div>
   );
 }
