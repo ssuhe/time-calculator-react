@@ -51,7 +51,9 @@ export default function App() {
     nofifyThis();
   }, []);
 
-  const nofifyThis = () => console.log("is it working?");
+  const nofifyThis = () => {
+    console.log("is it working?");
+  };
 
   return (
     <div className="h-full flex flex-col">
