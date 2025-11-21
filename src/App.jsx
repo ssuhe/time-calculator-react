@@ -53,8 +53,13 @@ export default function App() {
 
   const nofifyThis = () => {
     console.log("is it working?");
+
+    callMyAdditionalFields();
   };
 
+  const callMyAdditionalFields = () => {
+    console.log("this will also good comment");
+  };
   return (
     <div className="h-full flex flex-col">
       <div className="flex border-b p-3 gap-4 pb-4 overflow-auto">
